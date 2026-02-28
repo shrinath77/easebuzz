@@ -3,137 +3,437 @@
 <html>
 <head>
 <title>Merchant Transaction Form</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', Arial, sans-serif;
+}
+
 body {
-	font-family: Arial;
-	background-color: #f4f6f8;
+    background: linear-gradient(135deg, #e8ecf1 0%, #f4f6f8 50%, #e0e7ee 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 15px;
 }
 
-.container {
-	width: 600px;
-	margin: 40px auto;
-	background: white;
-	padding: 25px;
-	border-radius: 8px;
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+.page-wrapper {
+    display: flex;
+    width: 950px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.06);
+    background: #fff;
+    border: 1px solid rgba(255,255,255,0.6);
 }
 
-h2 {
-	text-align: center;
-	color: #2c3e50;
+/* LEFT BRANDING PANEL */
+.side-panel {
+    width: 300px;
+    background: linear-gradient(160deg, #1a8d5a 0%, #145e3c 40%, #0a2e1d 100%);
+    color: #fff;
+    padding: 40px 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.side-panel::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+}
+
+.side-panel::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: -40px;
+    width: 150px; height: 150px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+}
+
+.side-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+    z-index: 1;
+}
+
+.side-brand img {
+    width: 50px; height: 50px;
+    border-radius: 12px;
+    border: 2px solid rgba(255,255,255,0.2);
+    padding: 3px;
+    background: rgba(255,255,255,0.1);
+}
+
+.side-brand-text h2 {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+}
+
+.side-brand-text p {
+    font-size: 11px;
+    opacity: 0.8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+}
+
+.side-info {
+    position: relative;
+    z-index: 1;
+    margin-top: 35px;
+}
+
+.side-info h3 {
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 12px;
+}
+
+.side-info p {
+    font-size: 13px;
+    opacity: 0.85;
+    line-height: 1.6;
+}
+
+.side-features {
+    position: relative;
+    z-index: 1;
+    margin-top: 30px;
+}
+
+.side-feature {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+    font-size: 13px;
+    font-weight: 500;
+    opacity: 0.9;
+}
+
+.side-feature span.icon {
+    font-size: 18px;
+    width: 24px;
+    text-align: center;
+}
+
+.side-footer {
+    position: relative;
+    z-index: 1;
+    font-size: 12px;
+    opacity: 0.7;
+    letter-spacing: 0.3px;
+}
+
+/* FORM PANEL */
+.form-panel {
+    flex: 1;
+    padding: 35px 40px;
+    overflow-y: auto;
+    max-height: 90vh;
+}
+
+.form-panel::-webkit-scrollbar {
+    width: 6px;
+}
+
+.form-panel::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 10px;
+}
+
+.form-header {
+    margin-bottom: 25px;
+}
+
+.form-header h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1a1a2e;
+    letter-spacing: -0.3px;
+}
+
+.form-header p {
+    font-size: 13px;
+    color: #888;
+    margin-top: 4px;
+}
+
+/* SECTION GROUPS */
+.form-section {
+    margin-bottom: 22px;
+}
+
+.section-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #1a8d5a;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 12px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #e8f5e9;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.form-row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 0;
+}
+
+.form-group {
+    flex: 1;
+    margin-bottom: 14px;
 }
 
 label {
-	font-weight: bold;
-	display: block;
-	margin-top: 12px;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 5px;
+    font-size: 13px;
+    color: #444;
 }
 
 .required {
-	color: red;
-	margin-left: 3px;
+    color: #e53935;
+    margin-left: 2px;
 }
 
 input, select {
-	width: 100%;
-	padding: 8px;
-	margin-top: 5px;
-	border-radius: 4px;
-	border: 1px solid #ccc;
+    width: 100%;
+    padding: 11px 14px;
+    border-radius: 10px;
+    border: 1.5px solid #e0e0e0;
+    font-size: 14px;
+    font-family: 'Inter', Arial, sans-serif;
+    transition: all 0.25s ease;
+    background: #fafbfc;
+    color: #333;
 }
 
+input:focus, select:focus {
+    outline: none;
+    border-color: #1a8d5a;
+    box-shadow: 0 0 0 3px rgba(26,141,90,0.12);
+    background: #fff;
+}
+
+input::placeholder {
+    color: #aaa;
+    font-weight: 400;
+}
+
+/* UDF GRID */
+.udf-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+}
+
+.udf-grid .form-group {
+    margin-bottom: 0;
+}
+
+/* SUBMIT BUTTON */
 .btn {
-	margin-top: 20px;
-	background-color: #007bff;
-	color: white;
-	border: none;
-	padding: 12px;
-	width: 100%;
-	font-size: 16px;
-	border-radius: 5px;
-	cursor: pointer;
+    margin-top: 8px;
+    background: linear-gradient(135deg, #1a8d5a, #145e3c);
+    color: white;
+    border: none;
+    padding: 15px;
+    width: 100%;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    letter-spacing: 0.3px;
+    box-shadow: 0 4px 15px rgba(26,141,90,0.3);
+    font-family: 'Inter', Arial, sans-serif;
 }
 
 .btn:hover {
-	background-color: #0056b3;
+    background: linear-gradient(135deg, #157a4e, #0d4f30);
+    box-shadow: 0 6px 20px rgba(26,141,90,0.4);
+    transform: translateY(-1px);
+}
+
+.btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(26,141,90,0.3);
 }
 </style>
 </head>
 <body>
 
-	<div class="container">
-		<h2>Merchant Transaction Form</h2>
+<div class="page-wrapper">
 
-		<form action="PaymentProcess" method="post">
+    <!-- LEFT BRANDING PANEL -->
+    <div class="side-panel">
+        <div>
+            <div class="side-brand">
+                <img src="images/splogo.png" alt="SP Logo">
+                <div class="side-brand-text">
+                    <h2>SP Transaction Hub</h2>
+                    <p>Secure Payments</p>
+                </div>
+            </div>
 
-			<!-- Merchant Form -->
-			<label>Merchant Name <span class="required">*</span></label> <input
-				type="text" name="merchantName" required> <label>Merchant
-				ID <span class="required">*</span>
-			</label> <input type="text" name="merchantId" required>
+            <div class="side-info">
+                <h3>Start a New Transaction</h3>
+                <p>Fill in the merchant and customer details to initiate a secure payment.</p>
+            </div>
 
-			<!-- Merchant Transaction ID -->
-			<label>Merchant Transaction ID <span class="required">*</span></label>
-			<input type="text" name="merchantTxnId" required>
+            <div class="side-features">
+                <div class="side-feature"><span class="icon">🔒</span> AES-256 Encrypted</div>
+                <div class="side-feature"><span class="icon">⚡</span> Instant Processing</div>
+                <div class="side-feature"><span class="icon">🛡️</span> PCI DSS Compliant</div>
+                <div class="side-feature"><span class="icon">📊</span> Real-time Tracking</div>
+            </div>
+        </div>
 
-			<!-- Amount -->
-			<label>Amount (₹) <span class="required">*</span></label>
-			<input type="number" name="amount" placeholder="e.g. 1500.00"
-			       step="0.01" min="1" required
-			       oninput="this.value = this.value.replace(/[^0-9.]/g, '')">
+        <div class="side-footer">🔒 Secured by SP Transaction Hub</div>
+    </div>
 
-			<!-- Txn Date & Time -->
-			<label>Transaction Date & Time <span class="required">*</span></label>
-			<input type="datetime-local" name="txnDateTime" required>
+    <!-- FORM PANEL -->
+    <div class="form-panel">
+        <div class="form-header">
+            <h2>Merchant Transaction Form</h2>
+            <p>Fields marked with <span style="color:#e53935;">*</span> are required</p>
+        </div>
 
-			<!-- Customer Email -->
-			<label>Customer Email <span class="required">*</span></label> <input
-				type="email" name="customerEmail" required>
+        <form action="PaymentProcess" method="post">
 
-			<!-- Customer Mobile No  -->
-			<label>Customer Mobile Number <span class="required">*</span>
-			</label> <input type="text" name="customerMobile" maxlength="10"
-				oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
+            <!-- MERCHANT DETAILS -->
+            <div class="form-section">
+                <div class="section-title">🏢 Merchant Details</div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Merchant Name <span class="required">*</span></label>
+                        <input type="text" name="merchantName" placeholder="Enter merchant name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Merchant ID <span class="required">*</span></label>
+                        <input type="text" name="merchantId" placeholder="Enter merchant ID" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Merchant Transaction ID <span class="required">*</span></label>
+                    <input type="text" name="merchantTxnId" placeholder="Unique transaction identifier" required>
+                </div>
+            </div>
 
-			<!-- UDF Fields -->
-			<label>UDF 1</label> <input type="text" name="udf1"> <label>UDF
-				2</label> <input type="text" name="udf2"> <label>UDF 3</label> <input
-				type="text" name="udf3"> <label>UDF 4</label> <input
-				type="text" name="udf4"> <label>UDF 5</label> <input
-				type="text" name="udf5"> <label>UDF 6</label> <input
-				type="text" name="udf6">
+            <!-- PAYMENT DETAILS -->
+            <div class="form-section">
+                <div class="section-title">💰 Payment Details</div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Amount (₹) <span class="required">*</span></label>
+                        <input type="number" name="amount" placeholder="e.g. 1500.00"
+                               step="0.01" min="1" required
+                               oninput="this.value = this.value.replace(/[^0-9.]/g, '')">
+                    </div>
+                    <div class="form-group">
+                        <label>Transaction Date & Time <span class="required">*</span></label>
+                        <input type="datetime-local" name="txnDateTime" required>
+                    </div>
+                </div>
+            </div>
 
-			<!-- Merchant Return URL -->
-			<label>Merchant Return URL</label> <input type="url" name="returnUrl">
+            <!-- CUSTOMER DETAILS -->
+            <div class="form-section">
+                <div class="section-title">👤 Customer Details</div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Customer Email <span class="required">*</span></label>
+                        <input type="email" name="customerEmail" placeholder="customer@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Customer Mobile <span class="required">*</span></label>
+                        <input type="text" name="customerMobile" placeholder="10-digit number" maxlength="10"
+                               oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
+                    </div>
+                </div>
+            </div>
 
-			<!-- Account Type -->
-			<label>Account Type</label> <select name="accountType">
-				<option value="SAVINGS">Savings</option>
-				<option value="CURRENT">Current</option>
-			</select>
+            <!-- UDF FIELDS -->
+            <div class="form-section">
+                <div class="section-title">📝 Custom Fields (Optional)</div>
+                <div class="udf-grid">
+                    <div class="form-group"><label>UDF 1</label><input type="text" name="udf1" placeholder="—"></div>
+                    <div class="form-group"><label>UDF 2</label><input type="text" name="udf2" placeholder="—"></div>
+                    <div class="form-group"><label>UDF 3</label><input type="text" name="udf3" placeholder="—"></div>
+                    <div class="form-group"><label>UDF 4</label><input type="text" name="udf4" placeholder="—"></div>
+                    <div class="form-group"><label>UDF 5</label><input type="text" name="udf5" placeholder="—"></div>
+                    <div class="form-group"><label>UDF 6</label><input type="text" name="udf6" placeholder="—"></div>
+                </div>
+            </div>
 
-			<!-- Transaction Type -->
-			<label>Transaction Type</label> <select name="txType">
-				<option value="SALE">Sale</option>
-				<!--------<option value="REFUND">Refund</option> ----------->
-				<!----------<option value="AUTH">Authorization</option>-------->
-			</select>
+            <!-- CONFIGURATION -->
+            <div class="form-section">
+                <div class="section-title">⚙️ Configuration</div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Account Type</label>
+                        <select name="accountType">
+                            <option value="SAVINGS">Savings</option>
+                            <option value="CURRENT">Current</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Transaction Type</label>
+                        <select name="txType">
+                            <option value="SALE">Sale</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Merchant Return URL</label>
+                    <input type="url" name="returnUrl" placeholder="https://yoursite.com/callback">
+                </div>
+                <div class="form-group">
+                    <label>Merchant Push URL</label>
+                    <input type="url" name="pushUrl" placeholder="https://yoursite.com/webhook">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Reseller ID</label>
+                        <input type="text" name="resellerId" placeholder="Optional">
+                    </div>
+                    <div class="form-group">
+                        <label>Reseller Mobile</label>
+                        <input type="text" name="resellerMobile" placeholder="Optional">
+                    </div>
+                </div>
+            </div>
 
-			<!-- Reseller ID -->
-			<label>Reseller ID</label> <input type="text" name="resellerId">
+            <!-- SUBMIT -->
+            <button type="submit" class="btn">🔒 Submit Transaction</button>
 
-			<!-- Reseller Mobile No -->
-			<label>Reseller Mobile Number</label> <input type="text"
-				name="resellerMobile">
+        </form>
+    </div>
 
-			<!-- Merchant Push URL -->
-			<label>Merchant Push URL</label> <input type="url" name="pushUrl">
-
-			<!-- Submit Button -->
-			<button type="submit" class="btn">Submit Transaction</button>
-
-		</form>
-	</div>
+</div>
 
 </body>
 </html>

@@ -15,6 +15,7 @@
     <link rel="icon" type="image/png"
           href="<%=request.getContextPath()%>/images/splogo.png" sizes="32x32">
     <title>SP Transaction Hub - Trusted Business</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <style>
@@ -22,96 +23,143 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Arial, sans-serif;
+    font-family: 'Inter', Arial, sans-serif;
 }
 
 body {
-    background: #f4f6f8;
+    background: linear-gradient(135deg, #e8ecf1 0%, #f4f6f8 50%, #e0e7ee 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .checkout-wrapper {
-    width: 1000px;
-    height: 590px;
-    margin: 40px auto;
+    width: 1020px;
+    min-height: 600px;
+    margin: 30px auto;
     display: flex;
-    border-radius: 14px;
+    border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0,0,0,0.06);
     background: #fff;
+    border: 1px solid rgba(255,255,255,0.6);
 }
 
 /* LEFT PANEL */
 .left-panel {
     width: 35%;
-    background: linear-gradient(135deg, #1f6f4a, #0d3f2b);
+    background: linear-gradient(160deg, #1a8d5a 0%, #145e3c 40%, #0a2e1d 100%);
     color: white;
-    padding: 30px;
+    padding: 35px 30px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+}
+
+.left-panel::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+}
+
+.left-panel::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: -40px;
+    width: 150px; height: 150px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
 }
 
 .brand {
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
+    position: relative;
+    z-index: 1;
 }
 
 .brand img.brand-logo {
-    width: 60px;
-    height: 60px;
+    width: 55px;
+    height: 55px;
     object-fit: contain;
-    border-radius: 8px;
+    border-radius: 12px;
     flex-shrink: 0;
+    border: 2px solid rgba(255,255,255,0.2);
+    padding: 3px;
+    background: rgba(255,255,255,0.1);
 }
 
 .brand-text h2 {
-    font-size: 22px;
-    font-weight: bold;
+    font-size: 20px;
+    font-weight: 700;
     line-height: 1.2;
+    letter-spacing: -0.3px;
 }
 
 .brand-text p {
-    font-size: 12px;
-    opacity: 0.9;
+    font-size: 11px;
+    opacity: 0.8;
     margin-top: 3px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
 }
 
 .price-box {
-    background: rgba(255, 255, 255, 0.15);
-    padding: 20px;
-    border-radius: 12px;
-    margin-top: 20px;
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(10px);
+    padding: 22px;
+    border-radius: 16px;
+    margin-top: 25px;
+    border: 1px solid rgba(255,255,255,0.1);
+    position: relative;
+    z-index: 1;
 }
 
 .price-box p {
-    font-size: 14px;
-    opacity: 0.9;
+    font-size: 13px;
+    opacity: 0.85;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
 }
 
 .price-box h1 {
     margin-top: 8px;
-    font-size: 38px;
+    font-size: 40px;
+    font-weight: 700;
+    letter-spacing: -1px;
 }
 
 .user {
     margin-top: 20px;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.08);
     padding: 12px;
-    border-radius: 8px;
-    font-size: 14px;
+    border-radius: 10px;
+    font-size: 13px;
 }
 
 .secured {
     font-size: 12px;
-    opacity: 0.85;
+    opacity: 0.8;
+    font-weight: 500;
+    position: relative;
+    z-index: 1;
+    letter-spacing: 0.3px;
 }
 
 /* RIGHT PANEL */
 .right-panel {
     width: 65%;
-    padding: 25px;
+    padding: 28px 30px;
     background: #ffffff;
 }
 
@@ -119,93 +167,153 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding-bottom: 5px;
 }
 
 .header h3 {
-    font-size: 22px;
+    font-size: 21px;
+    font-weight: 700;
+    color: #1a1a2e;
+    letter-spacing: -0.3px;
 }
 
 .timer {
-    font-weight: bold;
-    color: #d32f2f;
-    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    font-size: 13px;
+    background: linear-gradient(135deg, #e53935, #c62828);
+    padding: 6px 14px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(229,57,53,0.3);
 }
 
 /* PAYMENT LAYOUT */
 .payment-container {
     display: flex;
-    margin-top: 20px;
-    height: 460px;
-    border-top: 1px solid #eee;
+    margin-top: 18px;
+    height: 470px;
+    border-top: 2px solid #f0f0f0;
+    border-radius: 0 0 12px 12px;
 }
 
 .methods {
     width: 35%;
-    border-right: 1px solid #eee;
-    background: #fafafa;
+    border-right: 2px solid #f0f0f0;
+    background: linear-gradient(180deg, #f8f9fb, #f2f4f7);
 }
 
 .method {
-    padding: 14px 16px;
+    padding: 15px 18px;
     cursor: pointer;
-    border-bottom: 1px solid #f1f1f1;
-    font-weight: 500;
-    font-size: 14px;
-    transition: 0.2s;
+    border-bottom: 1px solid #eaedf1;
+    font-weight: 600;
+    font-size: 13.5px;
+    color: #444;
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
 }
 
 .method:hover {
-    background: #f1f5fb;
+    background: #edf2fb;
+    color: #1a73e8;
+    padding-left: 22px;
 }
 
-.active {
-    background: #e8f0fe;
-    font-weight: bold;
+.method.active {
+    background: linear-gradient(90deg, #e3edf7, #f0f4ff);
+    font-weight: 700;
     color: #1a73e8;
+    border-left: 3px solid #1a73e8;
+}
+
+.method .method-icon {
+    font-size: 18px;
+    width: 22px;
+    text-align: center;
 }
 
 .details {
     width: 65%;
-    padding: 20px 25px;
+    padding: 22px 25px;
     overflow-y: auto;
 }
 
 .details input, .details select {
     width: 100%;
-    padding: 11px;
+    padding: 12px 14px;
     margin-top: 12px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
+    border: 1.5px solid #e0e0e0;
+    border-radius: 10px;
     font-size: 14px;
+    font-family: 'Inter', Arial, sans-serif;
+    transition: all 0.25s ease;
+    background: #fafbfc;
+    color: #333;
+}
+
+.details input:focus, .details select:focus {
+    outline: none;
+    border-color: #1a73e8;
+    box-shadow: 0 0 0 3px rgba(26,115,232,0.12);
+    background: #fff;
+}
+
+.details input::placeholder {
+    color: #aaa;
+    font-weight: 400;
 }
 
 .qr-box {
     text-align: center;
 }
 
+.qr-box h4 {
+    color: #2c3e50;
+    font-size: 15px;
+    font-weight: 600;
+}
+
 .qr-box img.qr {
-    margin-top: 12px;
-    border: 1px solid #eee;
-    padding: 8px;
-    border-radius: 8px;
+    margin-top: 14px;
+    border: 2px solid #eef2f7;
+    padding: 10px;
+    border-radius: 14px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+    transition: transform 0.3s ease;
+}
+
+.qr-box img.qr:hover {
+    transform: scale(1.03);
 }
 
 /* UPI Logos */
 .upi-logos {
     display: flex;
     justify-content: center;
-    gap: 12px;
-    margin-top: 15px;
+    gap: 14px;
+    margin-top: 18px;
 }
 
 .upi-logos img {
-    width: 45px;
-    height: 45px;
+    width: 48px;
+    height: 48px;
     object-fit: contain;
-    border-radius: 8px;
+    border-radius: 12px;
     background: #fff;
-    padding: 5px;
-    border: 1px solid #eee;
+    padding: 6px;
+    border: 1.5px solid #e8e8e8;
+    transition: all 0.25s ease;
+    cursor: pointer;
+}
+
+.upi-logos img:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border-color: #1a73e8;
 }
 
 /* Card Logos */
@@ -217,26 +325,32 @@ body {
 }
 
 .card-logos img {
-    width: 150px;
-    height: 90px;
+    width: 140px;
+    height: 80px;
     object-fit: contain;
+    transition: transform 0.2s ease;
+}
+
+.card-logos img:hover {
+    transform: scale(1.05);
 }
 
 /* ===================== BNPL STYLES ===================== */
 .bnpl-header {
     text-align: center;
-    margin-bottom: 12px;
+    margin-bottom: 14px;
 }
 
 .bnpl-header h4 {
     font-size: 15px;
-    color: #333;
+    color: #1a1a2e;
+    font-weight: 700;
 }
 
 .bnpl-header p {
     font-size: 12px;
     color: #888;
-    margin-top: 3px;
+    margin-top: 4px;
 }
 
 .bnpl-providers {
@@ -244,20 +358,20 @@ body {
     flex-wrap: wrap;
     gap: 8px;
     justify-content: center;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
 }
 
 .bnpl-provider-btn {
-    border: 2px solid #ddd;
-    border-radius: 10px;
-    padding: 7px 14px;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 8px 16px;
     cursor: pointer;
     font-size: 13px;
     font-weight: 600;
     background: #fff;
-    transition: 0.2s;
-    color: #333;
-    min-width: 88px;
+    transition: all 0.25s ease;
+    color: #444;
+    min-width: 90px;
     text-align: center;
 }
 
@@ -265,89 +379,107 @@ body {
     border-color: #1a73e8;
     color: #1a73e8;
     background: #f0f6ff;
+    transform: translateY(-2px);
+    box-shadow: 0 3px 10px rgba(26,115,232,0.1);
 }
 
 .bnpl-provider-btn.selected {
     border-color: #1a73e8;
     background: #e8f0fe;
     color: #1a73e8;
+    box-shadow: 0 2px 8px rgba(26,115,232,0.15);
 }
 
 .bnpl-emi-box {
-    background: #f9f9f9;
-    border: 1px solid #eee;
-    border-radius: 10px;
-    padding: 10px 12px;
-    margin-top: 10px;
+    background: linear-gradient(135deg, #f8f9fb, #f2f4f7);
+    border: 1.5px solid #eaedf1;
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin-top: 12px;
     font-size: 13px;
     color: #444;
 }
 
 .bnpl-emi-box p {
-    margin-bottom: 6px;
-    font-weight: 600;
-    color: #333;
+    margin-bottom: 8px;
+    font-weight: 700;
+    color: #1a1a2e;
 }
 
 .bnpl-emi-options {
     display: flex;
     gap: 8px;
     flex-wrap: wrap;
-    margin-top: 4px;
+    margin-top: 6px;
 }
 
 .emi-option {
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 6px 10px;
+    border: 1.5px solid #ddd;
+    border-radius: 10px;
+    padding: 8px 12px;
     cursor: pointer;
     font-size: 12px;
     background: #fff;
-    transition: 0.2s;
+    transition: all 0.25s ease;
     text-align: center;
-    min-width: 72px;
+    min-width: 75px;
 }
 
 .emi-option:hover {
     border-color: #1a73e8;
     color: #1a73e8;
+    transform: translateY(-2px);
 }
 
 .emi-option.selected {
     border-color: #1a73e8;
-    background: #e8f0fe;
+    background: linear-gradient(135deg, #e8f0fe, #dce7fc);
     color: #1a73e8;
-    font-weight: bold;
+    font-weight: 700;
+    box-shadow: 0 2px 8px rgba(26,115,232,0.12);
 }
 /* ====================================================== */
 
 .pay-btn {
     width: 100%;
-    margin-top: 20px;
-    padding: 14px;
-    background: #3399cc;
+    margin-top: 22px;
+    padding: 15px;
+    background: linear-gradient(135deg, #1a8d5a, #145e3c);
     border: none;
     color: white;
-    font-size: 17px;
-    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 12px;
     cursor: pointer;
-    transition: 0.3s;
+    transition: all 0.3s ease;
+    letter-spacing: 0.3px;
+    box-shadow: 0 4px 15px rgba(26,141,90,0.3);
+    font-family: 'Inter', Arial, sans-serif;
 }
 
 .pay-btn:hover {
-    background: #2a85b3;
+    background: linear-gradient(135deg, #157a4e, #0d4f30);
+    box-shadow: 0 6px 20px rgba(26,141,90,0.4);
+    transform: translateY(-1px);
+}
+
+.pay-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(26,141,90,0.3);
 }
 
 .pay-btn:disabled {
-    background: #aaa;
+    background: linear-gradient(135deg, #bbb, #999);
     cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
 }
 
 #msg {
     margin-top: 18px;
-    font-weight: bold;
+    font-weight: 600;
     text-align: center;
-    font-size: 15px;
+    font-size: 14px;
 }
 
 /* ===================== SUCCESS POPUP ===================== */
@@ -456,7 +588,24 @@ body {
                 <h1>₹<%= amount %></h1>
             </div>
 
-</div>
+            <div class="user" style="margin-top:18px;">
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+                    <span style="font-size:16px;">🛒</span>
+                    <span style="font-weight:600;">Order Details</span>
+                </div>
+                <div style="font-size:12px; opacity:0.8; line-height:1.6;">
+                    <div style="display:flex; justify-content:space-between;">
+                        <span>Subtotal</span><span>₹<%= amount %></span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between;">
+                        <span>Tax & Fees</span><span>₹0.00</span>
+                    </div>
+                    <div style="border-top:1px solid rgba(255,255,255,0.15); margin-top:6px; padding-top:6px; display:flex; justify-content:space-between; font-weight:700; font-size:13px;">
+                        <span>Total</span><span>₹<%= amount %></span>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="secured">🔒 Secured by SP Transaction Hub</div>
     </div>
@@ -474,13 +623,15 @@ body {
 
             <!-- METHODS -->
             <div class="methods">
-                <div class="method active" onclick="selectMethod('upi', this)">UPI (QR)</div>
-                <div class="method" onclick="selectMethod('card', this)">Cards</div>
-                <div class="method" onclick="selectMethod('netbanking', this)">Netbanking</div>
-                <div class="method" onclick="selectMethod('wallet', this)">Wallet</div>
+                <div class="method active" onclick="selectMethod('upi', this)"><span class="method-icon">📱</span> UPI (QR)</div>
+                <div class="method" onclick="selectMethod('card', this)"><span class="method-icon">💳</span> Cards</div>
+                <div class="method" onclick="selectMethod('netbanking', this)"><span class="method-icon">🏦</span> Netbanking</div>
+                <div class="method" onclick="selectMethod('wallet', this)"><span class="method-icon">👛</span> Wallet</div>
                 <div class="method" onclick="selectMethod('bnpl', this)">
-                    Buy Now Pay Later
-                    <div style="font-size: 11px; color: #888; font-weight: normal; margin-top: 2px;">EMI / No-Cost</div>
+                    <span class="method-icon">🛍️</span>
+                    <div>Buy Now Pay Later
+                        <div style="font-size: 10px; color: #888; font-weight: normal; margin-top: 2px;">EMI / No-Cost</div>
+                    </div>
                 </div>
             </div>
 
@@ -493,7 +644,7 @@ body {
                         <h4>Scan QR to Pay</h4>
                         <img class="qr"
                             src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=SPTransactionHubPayment" />
-                        <p style="margin-top: 10px;">Scan with any UPI App</p>
+                        <p style="margin-top: 12px; color: #666; font-size: 13px;">Scan with any UPI App</p>
                         <div class="upi-logos">
                             <img src="images/googlepay.png" alt="GPay">
                             <img src="images/Phonepay.png" alt="PhonePe">

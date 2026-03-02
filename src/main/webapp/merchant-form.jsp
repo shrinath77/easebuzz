@@ -327,15 +327,9 @@ input::placeholder {
             <!-- MERCHANT DETAILS -->
             <div class="form-section">
                 <div class="section-title">🏢 Merchant Details</div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Merchant Name <span class="required">*</span></label>
-                        <input type="text" name="merchantName" placeholder="Enter merchant name" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Merchant ID <span class="required">*</span></label>
-                        <input type="text" name="merchantId" placeholder="Enter merchant ID" required>
-                    </div>
+                <div class="form-group">
+                    <label>Merchant ID <span class="required">*</span></label>
+                    <input type="text" name="merchantId" placeholder="Enter merchant ID" required>
                 </div>
                 <div class="form-group">
                     <label>Merchant Transaction ID <span class="required">*</span></label>

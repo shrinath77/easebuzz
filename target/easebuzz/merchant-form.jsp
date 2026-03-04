@@ -13,12 +13,14 @@
 }
 
 body {
-    background: linear-gradient(135deg, #e8ecf1 0%, #f4f6f8 50%, #e0e7ee 100%);
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 50%, #90caf9 100%);
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 30px 15px;
+    position: relative;
+    overflow: hidden;
 }
 
 .page-wrapper {
@@ -26,15 +28,16 @@ body {
     width: 950px;
     border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.06);
+    box-shadow: 0 20px 60px rgba(33,150,243,0.15), 0 4px 12px rgba(33,150,243,0.08);
     background: #fff;
-    border: 1px solid rgba(255,255,255,0.6);
+    border: 1px solid rgba(33,150,243,0.2);
+    animation: slideUp 0.6s ease-out;
 }
 
 /* LEFT BRANDING PANEL */
 .side-panel {
     width: 300px;
-    background: linear-gradient(160deg, #1a8d5a 0%, #145e3c 40%, #0a2e1d 100%);
+    background: linear-gradient(160deg, #2196f3 0%, #1976d2 40%, #1565c0 100%);
     color: #fff;
     padding: 40px 30px;
     display: flex;
@@ -184,12 +187,12 @@ body {
 .section-title {
     font-size: 13px;
     font-weight: 700;
-    color: #1a8d5a;
+    color: #1976d2;
     text-transform: uppercase;
     letter-spacing: 0.8px;
     margin-bottom: 12px;
     padding-bottom: 6px;
-    border-bottom: 2px solid #e8f5e9;
+    border-bottom: 2px solid #e3f2fd;
     display: flex;
     align-items: center;
     gap: 6px;
@@ -233,8 +236,8 @@ input, select {
 
 input:focus, select:focus {
     outline: none;
-    border-color: #1a8d5a;
-    box-shadow: 0 0 0 3px rgba(26,141,90,0.12);
+    border-color: #1976d2;
+    box-shadow: 0 0 0 3px rgba(33,150,243,0.15);
     background: #fff;
 }
 
@@ -257,7 +260,7 @@ input::placeholder {
 /* SUBMIT BUTTON */
 .btn {
     margin-top: 8px;
-    background: linear-gradient(135deg, #1a8d5a, #145e3c);
+    background: linear-gradient(135deg, #2196f3, #1976d2);
     color: white;
     border: none;
     padding: 15px;
@@ -268,19 +271,19 @@ input::placeholder {
     cursor: pointer;
     transition: all 0.3s ease;
     letter-spacing: 0.3px;
-    box-shadow: 0 4px 15px rgba(26,141,90,0.3);
+    box-shadow: 0 4px 15px rgba(33,150,243,0.3);
     font-family: 'Inter', Arial, sans-serif;
 }
 
 .btn:hover {
-    background: linear-gradient(135deg, #157a4e, #0d4f30);
-    box-shadow: 0 6px 20px rgba(26,141,90,0.4);
+    background: linear-gradient(135deg, #1976d2, #1565c0);
+    box-shadow: 0 6px 20px rgba(33,150,243,0.4);
     transform: translateY(-1px);
 }
 
 .btn:active {
     transform: translateY(0);
-    box-shadow: 0 2px 8px rgba(26,141,90,0.3);
+    box-shadow: 0 2px 8px rgba(33,150,243,0.3);
 }
 </style>
 </head>
@@ -348,9 +351,7 @@ input::placeholder {
                                oninput="this.value = this.value.replace(/[^0-9.]/g, '')">
                     </div>
                     <div class="form-group">
-                        <label>Transaction Date & Time <span class="required">*</span></label>
-                        <input type="datetime-local" name="txnDateTime" required>
-                    </div>
+                                                                    </div>
                 </div>
             </div>
 

@@ -145,6 +145,7 @@ public class PaymentProcess extends HttpServlet {
                     productinfo + "|" + firstname + "|" + email +
                     "|||||||||||" + EASEBUZZ_SALT;
 
+
             MessageDigest md = MessageDigest.getInstance("SHA-512");
 
             byte[] bytes = md.digest(hashString.getBytes(StandardCharsets.UTF_8));
@@ -229,7 +230,7 @@ public class PaymentProcess extends HttpServlet {
 
             int responseCode = conn.getResponseCode();
 
-            LOGGER.info("Easebuzz response code: " + responseCode);
+            LOGGER.info(" Easebuzz response code: " + responseCode);
 
             if (responseCode == HttpURLConnection.HTTP_OK) {
 
@@ -241,7 +242,7 @@ public class PaymentProcess extends HttpServlet {
 
                 LOGGER.info("Easebuzz response: " + response);
 
-                // ✅ Check if payment request is valid
+                //  Check if payment request is valid
                 if (response.contains("\"status\": 1")) {
 
                     int start = response.indexOf("\"data\": \"") + 9;

@@ -8,9 +8,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @WebServlet("/checkout")
 public class CheckoutServlet extends HttpServlet {
+
+    private static final Logger LOGGER = Logger.getLogger(CheckoutServlet.class.getName());
 
     /**
      * GET /checkout — forward to the checkout page
@@ -18,6 +22,7 @@ public class CheckoutServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        LOGGER.info("GET /checkout - Forwarding to checkout.jsp");
         request.getRequestDispatcher("/checkout.jsp").forward(request, response);
     }
 
@@ -43,13 +48,12 @@ public class CheckoutServlet extends HttpServlet {
             }
 
             String body = sb.toString();
-            System.out.println("[CheckoutServlet] Payment request received: " + body);
+            LOGGER.info("Payment request received: " + body);
 
             // Extract the "method" field from JSON using simple string parsing
             String method = "UNKNOWN";
             if (body.contains("\"method\"")) {
-                int start = body.indexOf("\"method\"") + 10; // after "method":
-                // skip whitespace and opening quote
+                int start = body.indexOf("\"method\"") + 10;
                 while (start < body.length() && (body.charAt(start) == ' ' || body.charAt(start) == ':' || body.charAt(start) == '"')) {
                     start++;
                 }
@@ -59,7 +63,7 @@ public class CheckoutServlet extends HttpServlet {
                 }
             }
 
-            // Read amount from the JSON body (sent by buildPayload in checkout.jsp)
+            // Read amount from the JSON body
             String amount = "0.00";
             if (body.contains("\"amount\"")) {
                 int aStart = body.indexOf("\"amount\"") + 10;
@@ -70,33 +74,35 @@ public class CheckoutServlet extends HttpServlet {
                 if (aEnd > aStart) amount = body.substring(aStart, aEnd);
             }
 
-            System.out.println("[CheckoutServlet] Payment Method: " + method + " | Amount: \u20B9" + amount);
+            LOGGER.info("Payment Method: " + method + " | Amount: ₹" + amount);
 
-            // Get merchantTxnId from session to identify which record to update
+            // Get txnid from session to identify which record to update
             HttpSession session = request.getSession(false);
-            String merchantTxnId = (session != null) ? (String) session.getAttribute("merchantTxnId") : null;
+            String txnid = (session != null) ? (String) session.getAttribute("txnid") : null;
 
-            // TODO: Integrate with real payment gateway here
+            // TODO: Integrate with real EaseBuzz payment gateway here
             // For now, simulate a successful payment response
-            String txnId = "TXN" + System.currentTimeMillis();
+            String easebuzzTxnId = "EB" + System.currentTimeMillis();
+            String bankRefNum = "BRN" + System.currentTimeMillis();
 
-            // UPDATE payment_status to SUCCESS in DB
-            updatePaymentStatus(merchantTxnId, "SUCCESS");
+            // UPDATE transaction with success details
+            updateTransactionStatus(txnid, "SUCCESS", method, easebuzzTxnId, bankRefNum, null);
 
             String jsonResponse = "{"
                     + "\"status\":\"success\","
-                    + "\"message\":\"Payment of \\u20B9" + amount + " received via " + method + ". Transaction ID: " + txnId + "\""
+                    + "\"message\":\"Payment of \\u20B9" + amount + " received via " + method + ". Transaction ID: " + easebuzzTxnId + "\""
                     + "}";
 
+            LOGGER.info("Payment successful - TxnID: " + easebuzzTxnId);
             response.getWriter().write(jsonResponse);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Payment processing failed", e);
 
             // Try to mark the transaction as FAILED in DB
             HttpSession session = request.getSession(false);
-            String merchantTxnId = (session != null) ? (String) session.getAttribute("merchantTxnId") : null;
-            updatePaymentStatus(merchantTxnId, "FAILED");
+            String txnid = (session != null) ? (String) session.getAttribute("txnid") : null;
+            updateTransactionStatus(txnid, "FAILED", null, null, null, e.getMessage());
 
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.getWriter().write("{"
@@ -107,27 +113,48 @@ public class CheckoutServlet extends HttpServlet {
     }
 
     /**
-     * Updates payment_status in the payment table for a given merchantTxnId.
+     * Updates transaction status and related fields in the transactions table.
+     *
+     * @param txnid           Transaction ID (unique)
+     * @param status          Payment status (SUCCESS, FAILED, PENDING)
+     * @param paymentMode     Payment method used (UPI, CARD, NETBANKING, WALLET, BNPL)
+     * @param easebuzzTxnId   EaseBuzz transaction ID returned from gateway
+     * @param bankRefNum      Bank reference number
+     * @param errorMessage    Error message if payment failed
      */
-    private void updatePaymentStatus(String merchantTxnId, String status) {
-        if (merchantTxnId == null || merchantTxnId.isEmpty()) {
-            System.err.println("[CheckoutServlet] Cannot update status — merchantTxnId is null");
+    private void updateTransactionStatus(String txnid, String status, String paymentMode,
+                                          String easebuzzTxnId, String bankRefNum, String errorMessage) {
+        if (txnid == null || txnid.isEmpty()) {
+            LOGGER.warning("Cannot update status — txnid is null or empty");
             return;
         }
-        try {
-            Connection conn = DBConnection.getConnection();
+
+        try (Connection conn = DBConnection.getConnection()) {
             if (conn != null) {
-                String sql = "UPDATE transactions SET payment_status = ? WHERE merchant_txn_id = ?";
-                PreparedStatement ps = conn.prepareStatement(sql);
-                ps.setString(1, status);
-                ps.setString(2, merchantTxnId);
-                int rows = ps.executeUpdate();
-                System.out.println("[CheckoutServlet] payment_status set to " + status + " for txn: " + merchantTxnId + " (" + rows + " row updated)");
-                ps.close();
-                conn.close();
+                String sql = "UPDATE transactions SET " +
+                        "payment_status = ?, " +
+                        "payment_mode = ?, " +
+                        "easebuzz_txn_id = ?, " +
+                        "bank_ref_num = ?, " +
+                        "error_message = ? " +
+                        "WHERE txnid = ?";
+
+                try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                    ps.setString(1, status);
+                    ps.setString(2, paymentMode);
+                    ps.setString(3, easebuzzTxnId);
+                    ps.setString(4, bankRefNum);
+                    ps.setString(5, errorMessage);
+                    ps.setString(6, txnid);
+
+                    int rows = ps.executeUpdate();
+                    LOGGER.info("Transaction updated: status=" + status + ", txnid=" + txnid + " (" + rows + " row updated)");
+                }
+            } else {
+                LOGGER.severe("Database connection is NULL. Cannot update transaction status.");
             }
         } catch (Exception ex) {
-            System.err.println("[CheckoutServlet] Failed to update payment_status: " + ex.getMessage());
+            LOGGER.log(Level.SEVERE, "Failed to update transaction status for txnid: " + txnid, ex);
         }
     }
 }

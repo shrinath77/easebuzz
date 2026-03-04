@@ -31,6 +31,7 @@ public class FormController extends HttpServlet {
         String customerEmail = request.getParameter("customerEmail");
         String customerMobile = request.getParameter("customerMobile");
 
+
         System.out.println("Form Submitted: " + merchantName);
 
         try {

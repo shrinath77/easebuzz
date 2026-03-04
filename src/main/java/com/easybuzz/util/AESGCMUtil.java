@@ -5,8 +5,12 @@ import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.SecureRandom;
 import java.util.Base64;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class AESGCMUtil {
+
+    private static final Logger LOGGER = Logger.getLogger(AESGCMUtil.class.getName());
 
     // AES Configuration
     private static final String ALGORITHM = "AES";
@@ -14,12 +18,13 @@ public class AESGCMUtil {
     private static final int GCM_TAG_LENGTH = 128; // 128-bit authentication tag
 
     // 32 bytes = AES-256 Key (Replace with your real Merchant Key)
-    private static final String SECRET_KEY = "12345678901234567890123456789012";        ///secrate key
+    private static final String SECRET_KEY = "12345678901234567890123456789012";
 
     /**
      * Encrypt JSON/Data using AES-256 GCM
      */
     public static String encrypt(String plainText) throws Exception {
+        LOGGER.info("Encrypting data...");
 
         // Convert key to SecretKey
         byte[] keyBytes = SECRET_KEY.getBytes("UTF-8");
@@ -43,14 +48,16 @@ public class AESGCMUtil {
         System.arraycopy(iv, 0, combined, 0, iv.length);
         System.arraycopy(encryptedBytes, 0, combined, iv.length, encryptedBytes.length);
 
-        // Return Base64 encoded string (Payment gateway standard)
-        return Base64.getEncoder().encodeToString(combined);
+        String result = Base64.getEncoder().encodeToString(combined);
+        LOGGER.info("Encryption successful. Output length: " + result.length());
+        return result;
     }
 
     /**
      * Decrypt AES-256 GCM encrypted data (Optional - for testing)
      */
     public static String decrypt(String encryptedData) throws Exception {
+        LOGGER.info("Decrypting data...");
 
         byte[] decoded = Base64.getDecoder().decode(encryptedData);
 
@@ -66,13 +73,14 @@ public class AESGCMUtil {
         byte[] keyBytes = SECRET_KEY.getBytes("UTF-8");
         SecretKeySpec secretKey = new SecretKeySpec(keyBytes, ALGORITHM);
 
-        // Decrypt 
+        // Decrypt
         Cipher cipher = Cipher.getInstance(TRANSFORMATION);
         GCMParameterSpec gcmSpec = new GCMParameterSpec(GCM_TAG_LENGTH, iv);
         cipher.init(Cipher.DECRYPT_MODE, secretKey, gcmSpec);
 
         byte[] decryptedBytes = cipher.doFinal(cipherText);
 
+        LOGGER.info("Decryption successful.");
         return new String(decryptedBytes, "UTF-8");
     }
 }

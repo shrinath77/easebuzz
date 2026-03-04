@@ -1,11 +1,16 @@
 package com.easybuzz.util;
+
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DBConnection {
+
+    private static final Logger LOGGER = Logger.getLogger(DBConnection.class.getName());
 
     private static String URL;
     private static String USER;
@@ -31,26 +36,23 @@ public class DBConnection {
             DRIVER   = props.getProperty("db.driver");
 
             Class.forName(DRIVER);
-            System.out.println("[DBConnection] MySQL Driver Loaded Successfully");
-            System.out.println("[DBConnection] DB URL = " + URL);
+            LOGGER.info("MySQL Driver loaded successfully");
+            LOGGER.info("DB URL: " + URL);
 
         } catch (ClassNotFoundException e) {
-            // Driver JAR missing — log clearly but do NOT throw, so Tomcat still starts
-            System.err.println("[DBConnection] ERROR: MySQL Driver not found on classpath — " + e.getMessage());
+            LOGGER.log(Level.SEVERE, "MySQL Driver not found on classpath", e);
         } catch (Exception e) {
-            // Config error — log clearly but do NOT throw, so Tomcat still starts
-            System.err.println("[DBConnection] ERROR: Failed to load DB properties — " + e.getMessage());
+            LOGGER.log(Level.SEVERE, "Failed to load DB properties", e);
         }
     }
 
     public static Connection getConnection() {
         try {
             Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
-            System.out.println("Database Connected Successfully!");
+            LOGGER.fine("Database connection established");
             return conn;
         } catch (SQLException e) {
-            System.out.println("Database Connection Failed!");
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Database connection failed", e);
             return null;
         }
     }

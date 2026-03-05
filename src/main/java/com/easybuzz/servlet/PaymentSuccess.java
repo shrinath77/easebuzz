@@ -4,11 +4,9 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
-
-@WebServlet("/easebuzz/success")
+@WebServlet("/success")
 public class PaymentSuccess extends HttpServlet {
 
-    @Override
     protected void doPost(HttpServletRequest request,
                           HttpServletResponse response)
             throws ServletException, IOException {
@@ -23,5 +21,10 @@ public class PaymentSuccess extends HttpServlet {
         response.getWriter().println("Transaction ID: " + txnid + "<br>");
         response.getWriter().println("Amount: " + amount + "<br>");
         response.getWriter().println("Status: " + status + "<br>");
+    }
+
+    protected void doGet(HttpServletRequest req, HttpServletResponse res)
+            throws ServletException, IOException {
+        doPost(req, res);
     }
 }

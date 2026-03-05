@@ -1,1 +1,0 @@
-                        <label>Transaction Date & Time <span class="required">*</span></label>

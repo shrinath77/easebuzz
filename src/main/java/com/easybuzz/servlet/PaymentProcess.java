@@ -1,6 +1,8 @@
 package com.easybuzz.servlet;
 
 import com.easybuzz.util.DBConnection;
+import com.easybuzz.util.AESGCMUtil;
+import com.easybuzz.util.ConfigUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,15 +21,17 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.Properties;
+import java.io.InputStream;
 
 @WebServlet("/PaymentProcess")
 public class PaymentProcess extends HttpServlet {
 
     private static final Logger LOGGER = Logger.getLogger(PaymentProcess.class.getName());
 
-    // Easebuzz credentials
-    private static final String EASEBUZZ_KEY = "UDHDLP4PK";
-    private static final String EASEBUZZ_SALT = "QWMS4X1QJ";
+    // Easebuzz credentials - loaded from properties
+    private static final String EASEBUZZ_KEY = ConfigUtil.getEasebuzzKey();
+    private static final String EASEBUZZ_SALT = ConfigUtil.getEasebuzzSalt();
 
     private static final String EASEBUZZ_API =
             "https://testpay.easebuzz.in/payment/initiateLink";
@@ -53,9 +57,13 @@ public class PaymentProcess extends HttpServlet {
             }
             String phone = getParam(request, "customerMobile");
             String email = getParam(request, "customerEmail");
+            String merchantKey = request.getParameter("key");
 
-            String surl = "https://unnotable-unattired-moses.ngrok-free.dev/easebuzz/success";
-            String furl = "https://unnotable-unattired-moses.ngrok-free.dev/easebuzz/failure";
+            // Update these URLs with your actual ngrok URL or deployment URL
+            String baseUrl = request.getScheme() + "://" + request.getServerName() +
+                           ":" + request.getServerPort() + request.getContextPath();
+            String surl = baseUrl + "/success";
+            String furl = baseUrl + "/failure";
 
             String amount;
 
@@ -69,7 +77,7 @@ public class PaymentProcess extends HttpServlet {
             LOGGER.info("TxnID: " + txnid + " Amount: " + amount);
 
             // Save transaction in database
-            saveTransaction(txnid, amount, firstname, email, phone);
+            saveTransaction(merchantKey, txnid, amount, firstname, email, phone);
 
             // Generate hash
             String hash = generateHash(txnid, amount, productinfo, firstname, email);
@@ -108,22 +116,23 @@ public class PaymentProcess extends HttpServlet {
     }
 
     // Save transaction in DB
-    private void saveTransaction(String txnid, String amount,
+    private void saveTransaction(String merchantKey,String txnid, String amount,
                                  String firstname, String email, String phone) {
 
         try (Connection conn = DBConnection.getConnection()) {
 
             String sql =
-                    "INSERT INTO transactions(txnid,amount,firstname,email,phone,payment_status) VALUES (?,?,?,?,?,?)";
+                    "INSERT INTO transactions(merchant_key, txnid, amount, firstname, email, phone, payment_status) VALUES (?,?,?,?,?,?,?)";
 
             PreparedStatement ps = conn.prepareStatement(sql);
 
-            ps.setString(1, txnid);
-            ps.setString(2, amount);
-            ps.setString(3, firstname);
-            ps.setString(4, email);
-            ps.setString(5, phone);
-            ps.setString(6, "PENDING");
+            ps.setString(1, merchantKey);   // merchant key
+            ps.setString(2, txnid);
+            ps.setString(3, amount);
+            ps.setString(4, firstname);
+            ps.setString(5, email);
+            ps.setString(6, phone);
+            ps.setString(7, "PENDING");
 
             ps.executeUpdate();
 

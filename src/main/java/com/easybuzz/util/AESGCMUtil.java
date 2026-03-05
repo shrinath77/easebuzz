@@ -7,6 +7,7 @@ import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import com.easybuzz.util.ConfigUtil;
 
 public class AESGCMUtil {
 
@@ -17,8 +18,8 @@ public class AESGCMUtil {
     private static final String TRANSFORMATION = "AES/GCM/NoPadding";
     private static final int GCM_TAG_LENGTH = 128; // 128-bit authentication tag
 
-    // 32 bytes = AES-256 Key (Replace with your real Merchant Key)
-    private static final String SECRET_KEY = "12345678901234567890123456789012";
+    // 32 bytes = AES-256 Key (Loaded from properties)
+    private static final String SECRET_KEY = ConfigUtil.getProperty("aes.secret.key", "12345678901234567890123456789012");
 
     /**
      * Encrypt JSON/Data using AES-256 GCM

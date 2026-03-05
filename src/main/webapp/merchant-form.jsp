@@ -338,6 +338,10 @@ input::placeholder {
                     <label>Merchant Transaction ID <span class="required">*</span></label>
                     <input type="text" name="merchantTxnId" placeholder="Unique transaction identifier" required>
                 </div>
+                <div class="form-group">
+                    <label>API Key <span class="required">*</span></label>
+                    <input type="text" name="key" value="UDHDLP4PK" readonly>
+                </div>
             </div>
 
             <!-- PAYMENT DETAILS -->
@@ -351,7 +355,9 @@ input::placeholder {
                                oninput="this.value = this.value.replace(/[^0-9.]/g, '')">
                     </div>
                     <div class="form-group">
-                                                                    </div>
+                        <label>Product Info <span class="required">*</span></label>
+                        <input type="text" name="productinfo" placeholder="Product description" required>
+                    </div>
                 </div>
             </div>
 
@@ -359,6 +365,10 @@ input::placeholder {
             <div class="form-section">
                 <div class="section-title">👤 Customer Details</div>
                 <div class="form-row">
+                    <div class="form-group">
+                        <label>Customer Name <span class="required">*</span></label>
+                        <input type="text" name="firstname" placeholder="Customer full name" required>
+                    </div>
                     <div class="form-group">
                         <label>Customer Email <span class="required">*</span></label>
                         <input type="email" name="customerEmail" placeholder="customer@email.com" required>

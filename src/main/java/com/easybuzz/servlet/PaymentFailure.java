@@ -5,7 +5,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 
-@WebServlet("/easebuzz/failure")
+@WebServlet("/failure")
 public class PaymentFailure extends HttpServlet {
 
     @Override
@@ -21,5 +21,13 @@ public class PaymentFailure extends HttpServlet {
         response.getWriter().println("<h2>Payment Failed</h2>");
         response.getWriter().println("Transaction ID: " + txnid + "<br>");
         response.getWriter().println("Status: " + status + "<br>");
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request,
+                         HttpServletResponse response)
+            throws ServletException, IOException {
+
+        doPost(request, response);
     }
 }

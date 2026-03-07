@@ -1,5 +1,6 @@
 com\easybuzz\util\AESGCMUtil.class
 com\easybuzz\servlet\PaymentProcess.class
-com\easybuzz\servlet\FormController.class
-com\easybuzz\servlet\CheckoutServlet.class
+com\easybuzz\servlet\PaymentFailure.class
+com\easybuzz\util\ConfigUtil.class
 com\easybuzz\util\DBConnection.class
+com\easybuzz\servlet\PaymentSuccess.class

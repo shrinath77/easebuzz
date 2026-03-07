@@ -8,6 +8,7 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+
 public class DBConnection {
 
     private static final Logger LOGGER = Logger.getLogger(DBConnection.class.getName());

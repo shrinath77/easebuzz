@@ -5,9 +5,7 @@ import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.SecureRandom;
 import java.util.Base64;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-import com.easybuzz.util.ConfigUtil;
 
 public class AESGCMUtil {
 

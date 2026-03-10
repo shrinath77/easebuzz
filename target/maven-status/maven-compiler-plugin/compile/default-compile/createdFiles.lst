@@ -1,4 +1,3 @@
-com\easybuzz\util\AESGCMUtil.class
 com\easybuzz\servlet\PaymentProcess.class
 com\easybuzz\servlet\PaymentFailure.class
 com\easybuzz\util\ConfigUtil.class
